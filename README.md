@@ -11,7 +11,7 @@ Two player online game made using Meteor and React. Get points by pumping up the
 - Heroku
 
 
-## prerequisites
+## Prerequisites
 * Install NodeJs
 * Install Meteor
 
