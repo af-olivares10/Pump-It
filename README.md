@@ -28,7 +28,7 @@ Two player online game made using Meteor and React. Get points by pumping up the
   ```
 * Run on the main directory
   ```
-  > Meteor
+  > meteor
   ```
 And you are all set up! Access the app on http://localhost:3000/
 
