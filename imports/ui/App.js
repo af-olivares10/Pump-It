@@ -127,7 +127,7 @@ export  class App extends Component{
       if(this.props.ball.users===2){ // Juego en curso
         return <Enter  gameStarted = {true} timeout = {this.timeout}></Enter>
       }
-      return <Enter enter ={this.enter} onHold = {(this.props.ball.p1===this.state.nickname)} errorMessage = {this.state.errorMessage} howTo = {this.state.howTo} howToF = {this.howToF}></Enter>
+      return <Enter enter ={this.enter} onHold = {(this.props.ball.p1===this.state.nickname&&this.props.ball.users===1)} errorMessage = {this.state.errorMessage} howTo = {this.state.howTo} howToF = {this.howToF}></Enter>
     }
     else{
       return <div></div>
