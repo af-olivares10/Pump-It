@@ -1,5 +1,5 @@
 # Pump-It
-Two player online game made using Meteor and React. Get points by pumping up the ball. Click the ball to pump it. The bigger the ball, the more points you get. Make sure you click the ball or else you'll get some points discounted. If you pop the ball, you will loose a lot of points.
+Two player online game made using Meteor and React. Get points by pumping up the ball. Click the ball to pump it. The bigger the ball is, the more points you get. Make sure you click the ball or else you'll get some points discounted. If you pop the ball, you will loose a lot of points.
 
 ## Features
 
