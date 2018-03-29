@@ -9,7 +9,7 @@ export default class Enter extends Component{
   }
   enterMod = ()=>{
     if(this.props.howTo){
-      return (<div><div className = "wait-text">Get points by pumping up the ball. Click the ball to pump it. The bigger the ball, the more points you get. Make sure you click the ball or else you'll get some points discounted. If you pop the ball, you will loose a lot of points.</div>
+      return (<div><div className = "wait-text">Get points by pumping up the ball. Click the ball to pump it. The bigger the ball is, the more points you get. Make sure you click the ball or else you'll get some points discounted. If you pop the ball, you will loose a lot of points.</div>
       <div className="button enter">
         <button type="button" className="btn enter-button " onClick={()=>{this.props.howToF(false)}} > Got it!</button>
       </div>
