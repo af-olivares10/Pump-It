@@ -22,11 +22,14 @@ Two player online game made using Meteor and React. Get points by pumping up the
   > npm install
   ```
 
-* On the same directory run
+* (Optional) In case you are using a remote MongoDB service, set the url as an enviornment variable 
    ```
-  > npm start
+  > MONGO_URL=mongodb://<MONGO_URI>
   ```
-
+* Run on the main directory
+  ```
+  > Meteor
+  ```
 And you are all set up! Access the app on http://localhost:3000/
 
 ## License
