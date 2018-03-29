@@ -1,0 +1,132 @@
+/* CSS declarations go here */
+.full
+{
+  height: 100%;
+  width: 100%;
+
+}
+html{
+  height: 1000px;
+}
+body{
+  background-color: #000 !important;  /* fallback for old browsers */
+}
+#circle{
+  transition: transform 500ms ease-in-out;
+}
+.pump-it{
+  font-family: 'Faster One', cursive;
+  font-size: 200px;
+  line-height: 0.8;
+  text-align: center;
+}
+.enter{
+  margin: 100px auto;
+  text-align: center
+}
+.input{
+  border-radius: 40px;
+  width: 20%;
+  text-align:center;
+  font-size: 20px;
+  font-weight: bold;
+
+}
+.input:focus{
+  outline: none;
+}
+.nick-name{
+  height: 70px;
+}
+.enter-button{
+  width: 20%;
+  background-color: #8e0000;
+  color: white;
+  font-style: italic;
+  font-size: 25px !important;
+  text-shadow: -1px 0 grey, 0 1px grey, 1px 0 grey, 0 -1px grey;
+  font-weight: bold;
+  margin-bottom: 30px;
+}
+.howTo-button{
+  width: 20%;
+  background-color: grey;
+  color: white;
+  font-style: italic;
+  font-size: 25px !important;
+  text-shadow: -1px 0 grey, 0 1px grey, 1px 0 grey, 0 -1px grey;
+  margin-bottom: 30px;
+  font-weight: bold;
+}
+.wait-text{
+  color: white;
+  font-style: italic;
+  font-size: 25px !important;
+  font-weight: bold;
+  text-align: center;
+  margin: 50px auto;
+}
+.in-game-text{
+  font-weight: bold;
+  text-align: right;
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none; /* Non-prefixed version, currently  supported by Chrome and Opera */
+  right:50px;
+  z-index: -1;
+}
+.opponent-text{
+  color:  #8e0000;
+  font-style: italic;
+  font-size: 25px !important;
+  line-height: 100px;
+}
+.highscores-text{
+  color:white;
+  font-size: 20px !important;
+}
+.highscore{
+  color:white;
+  font-size: 50px !important;
+}
+.position-absolute{
+  position:absolute;
+  height: 100%;
+  width: 100%;
+}
+.loader {
+  border: 16px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 16px solid #8e0000;
+  width: 120px;
+  height: 120px;
+  -webkit-animation: spin 2s linear infinite; /* Safari */
+  animation: spin 2s linear infinite;
+  margin: 50px auto;
+}
+/* Safari */
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+.gameover{
+  margin: 50px auto;
+  text-align: center;
+}
+.gameover-text{
+  color: white;
+  font-style: italic;
+  font-size: 50px !important;
+  font-weight: bold;
+  text-align: center;
+  margin: 50px auto;
+  text-align: center;
+}
