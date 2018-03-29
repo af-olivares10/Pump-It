@@ -107,7 +107,7 @@ export  class App extends Component{
       let nBall = Ball.findOne({});
       nBall.users = 0;
       Ball.update(nBall._id,nBall);
-    }, 180000);
+    }, 120000);
   }
   howToF= (b)=>{
     this.setState({howTo: b});
@@ -121,7 +121,7 @@ export  class App extends Component{
       }
       if(this.props.ball.users===2 && (this.props.ball.p1===this.state.nickname||this.props.ball.p2===this.state.nickname)){ //Inicio de juego
         return(
-          <Game play = {this.play} negPlay = {this.negPlay} ball = {this.props.ball} opponent = {this.props.ball.p1===this.state.nickname?this.props.ball.p2:this.props.ball.p1}  users = {this.props.users} user ={this.state.nickname}></Game>
+          <Game play = {this.play} ball = {this.props.ball} opponent = {this.props.ball.p1===this.state.nickname?this.props.ball.p2:this.props.ball.p1}  users = {this.props.users} user ={this.state.nickname}></Game>
         )
       }
       if(this.props.ball.users===2){ // Juego en curso
