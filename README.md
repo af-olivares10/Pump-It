@@ -22,7 +22,7 @@ Two player online game made using Meteor and React. Get points by pumping up the
   > npm install
   ```
 
-* Run run
+* On the same directory run
    ```
   > npm start
   ```
