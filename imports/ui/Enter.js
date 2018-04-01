@@ -16,7 +16,7 @@ export default class Enter extends Component{
      </div>)
     }
     if(this.props.gameStarted){
-      return (<div><div className = "wait-text">There's a match taking place, please wait (2 minutes) until it's over...</div><div className="loader"></div> </div>)
+      return (<div><div className = "wait-text">There's a match taking place, please wait (5 minutes) until it's over...</div><div className="loader"></div> </div>)
     }
     if(this.props.onHold){
       return (<div><div className = "wait-text">Waiting for other players to join the game...</div><div className="loader"></div> </div>)
