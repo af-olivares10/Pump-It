@@ -107,7 +107,7 @@ export  class App extends Component{
       let nBall = Ball.findOne({});
       nBall.users = 0;
       Ball.update(nBall._id,nBall);
-    }, 120000);
+    }, 300000);
   }
   howToF= (b)=>{
     this.setState({howTo: b});
