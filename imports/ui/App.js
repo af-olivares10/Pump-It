@@ -112,6 +112,8 @@ export  class App extends Component{
   howToF= (b)=>{
     this.setState({howTo: b});
   }
+  /*Genera violaciones de aXe por landmarks. Deberia usar tags como main o header
+  */
   render(){
     if(this.props.ball){
       if((this.props.ball.p1===this.state.nickname||this.props.ball.p2===this.state.nickname) && this.props.ball.winner){ //Fin del juego
