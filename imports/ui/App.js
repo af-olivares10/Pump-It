@@ -1,6 +1,5 @@
 import React, {Component} from "react";
 import PropTypes from "prop-types";
-import PostList from "./PostList"
 import {withTracker} from "meteor/react-meteor-data"
 import {Ball} from "../api/ball"
 import {User} from "../api/user"
