@@ -7,6 +7,8 @@ export default class Enter extends Component{
     this.state={
     };
   }
+
+	/* Seria bueno desacoplar este metodo */
   enterMod = ()=>{
     if(this.props.howTo){
       return (<div><div className = "wait-text">Get points by pumping up the ball. Click the ball to pump it. The bigger the ball is, the more points you get. Make sure you click the ball or else you'll get some points discounted. If you pop the ball, you will loose a lot of points.</div>

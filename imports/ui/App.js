@@ -20,6 +20,7 @@ export  class App extends Component{
     };
   }
 
+	/* Seria bueno que los audios y imagenes estuvieran en la carpeta public */
   play = (event)=>{
     // var s = new buzz.sound('../imports/media/cluck.mp3');
     // s.play();
