@@ -76,12 +76,20 @@ export  class App extends Component{
       return;
     }
     let user=User.findOne({nickname});
+    /*Un nickname no es exactamente una cuenta, se sugiere habilitar el uso de un nickname en particular 
+    siempre que nadie lo este usando en ese momento. Si alguien escoge un nickname y sale de la aplicacion ese
+    nickname no podra ser usado nunca mas por nadie
+    */
     if(user){
       this.setState({errorMessage:"Nickname already taken, please choose another one."});
     }
     else{
       this.setState({errorMessage:""});
       this.setState({nickname});
+      /*No deberia permitirse el cambio de la base de datos del lado del cliente. Segun la documentacion de meteor 
+      por razones de seguridad es mejor hacerlo desde el lado del servidor con verificaciones de permisos y usando 
+      Meteor.Call()
+      */
       User.insert({nickname,score:0});
       let nBall = Ball.findOne({});
       nBall.users+=1;
