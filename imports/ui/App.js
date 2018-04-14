@@ -109,6 +109,7 @@ export  class App extends Component{
     }, 300000);
   }
   howToF= (b)=>{
+    console.log(Meteor.user());
     this.setState({howTo: b});
   }
   render(){
