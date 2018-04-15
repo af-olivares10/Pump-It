@@ -56,11 +56,10 @@ export  default class Game extends Component{
             from={xPrev}
             to={x}
             dur="0.1"
-            begin="indefinite"
+            begin="click"
             fill="freeze" />
             <animate
               id= "animateCircleCy"
-
               xlinkHref="#circle"
               attributeName="cy"
               from={yPrev}

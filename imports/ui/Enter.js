@@ -7,7 +7,7 @@ import '../startup/accounts-config.js';
 import { createContainer } from 'meteor/react-meteor-data';
 import rUser from '../api/realUsers.js';
 
- class EnterComponent extends Component{
+class EnterComponent extends Component{
   constructor(props){
     super(props);
     this.state={
@@ -19,7 +19,6 @@ import rUser from '../api/realUsers.js';
   }
   componentDidMount() {
     // Use Meteor Blaze to render login buttons
-    console.log(Meteor.userId());
     this.view = Blaze.render(Template.loginButtons,
       ReactDOM.findDOMNode(this.refs.container));
     }
@@ -29,7 +28,7 @@ import rUser from '../api/realUsers.js';
           (<div>
             <div className = "wait-text">Sign in to join a match.</div>
             <div className="button enter">
-              <button type="button" className="btn enter-button " onClick={()=>{this.deployLogin()}} > Sign in</button>
+              <button type="button" className="btn enter-button " onClick={()=>{this.deployLogin()}} >Sign in</button>
             </div>
           </div>)
         )
@@ -41,23 +40,58 @@ import rUser from '../api/realUsers.js';
         </div>
       </div>)
     }
-    if(this.props.gameStarted){
-      return (<div><div className = "wait-text">There's a match taking place, please wait (5 minutes) until it's over...</div><div className="loader"></div> </div>)
-    }
-    if(this.props.onHold){
-      return (<div><div className = "wait-text">Waiting for other players to join the game...</div><div className="loader"></div> </div>)
-    }
-    else{
-      return(
 
+    if(this.props.onHold){
+      let text = this.props.privateNumber? "Waiting for your opponent... Share this code with the person you want to play with: "+ this.props.privateNumber:"Waiting for other players to join the game..."
+      return (<div><div className = "wait-text">{text}</div><div className="loader"></div> </div>)
+    }
+    if(this.props.enterLoader){
+      return (<div><div className = "wait-text">Loading...</div><div className="loader"></div> </div>)
+    }
+    if(this.props.wantToJoin){
+      let prof = {profile:"Not loaded yet"};
+      if(Meteor.user()){
+        prof = Meteor.user();
+      }
+      return(
         <div className ="enter">
           <div className = "nick-name">
             <input type = "text" className = "input" placeholder="Nickname" ref = "text"/>
+          </div>
+          <div className = "nick-name">
+            <input type = "text" className = "input" placeholder="Match code" ref = "code"/>
+          </div>
+          <div className="button">
+            <button type="button" className="btn enter-button" onClick={()=>{this.props.joinPrivateMatch(this.refs.code.value.trim(), this.refs.text.value.trim(),prof.profile)}} >Join</button>
             <div style ={{  color: "red" }}>{this.props.errorMessage}</div>
 
           </div>
           <div className="button">
-            <button type="button" className="btn enter-button" onClick={()=>{this.props.enter(this.refs.text.value.trim())}} >Enter</button>
+            <button type="button" className="btn howTo-button" onClick={()=>{this.props.joinView(false)}} >Cancel</button>
+          </div>
+        </div>
+      )
+    }
+    else{
+      let prof = {profile:"Not loaded yet"};
+      if(Meteor.user()){
+        prof = Meteor.user();
+      }
+
+      return(
+        <div className ="enter">
+          <div className = "nick-name">
+            <input type = "text" className = "input" placeholder="Nickname" ref = "text"/>
+            <div style ={{  color: "red" }}>{this.props.errorMessage}</div>
+          </div>
+          <div className="button">
+            <button type="button" className="btn enter-button" onClick={()=>{this.props.enter(this.refs.text.value.trim(), prof.profile)}} >Enter</button>
+          </div>
+          <div className="button">
+            <button type="button" className="btn long-text-button" onClick={()=>{this.props.createPrivateMatch(this.refs.text.value.trim(), prof.profile)}} >New private game</button>
+          </div>
+          <div className="button">
+            <button type="button" className="btn long-text-button" onClick={()=>{this.props.joinView(true)}} >Join private game</button>
           </div>
           <div className="button">
             <button type="button" className="btn howTo-button" onClick={()=>{this.props.howToF(true)}} >How to play</button>
@@ -68,26 +102,17 @@ import rUser from '../api/realUsers.js';
 
     }
   }
-  timeout = ()=>{
-    if(this.props.gameStarted){
-      this.props.timeout();
-    }
-    return;
-  }
   render(){
     return(
       <div className =" container">
         <span ref="container" style= {{"paddingTop":"10px","position":"absolute" ,"transform":"translate(-100px)"}}/>;
 
         <div className ="pump-it" >
-          <div style= {{"color":"white "}}>PUMP</div>
+          <div style= {{"color":"white"}}>PUMP</div>
           <div style= {{"color":"#8e0000"}}>IT</div>
         </div>
         <div>
           {this.enterMod()}
-        </div>
-        <div>
-          {this.timeout()}
         </div>
       </div>
     )
@@ -95,8 +120,8 @@ import rUser from '../api/realUsers.js';
   }
 }
 export default  Enter = createContainer(() => {
-    Meteor.subscribe('usersData');
-    return {
-        user: Meteor.user(),
-    };
+  Meteor.subscribe('usersData');
+  return {
+    user: Meteor.user(),
+  };
 }, EnterComponent);

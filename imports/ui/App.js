@@ -12,26 +12,31 @@ export  class App extends Component{
     super(props);
 
     this.state={
-      onHold:false,
       errorMessage: "",
       nickname:"bnpiplayer",
-      howTo:false
+      howTo:false,
+      ball: {},
+      enterLoader :false,
+      privateNumber: null,
+      wantToJoin: false
     };
   }
 
   play = (event)=>{
     // var s = new buzz.sound('../imports/media/cluck.mp3');
     // s.play();
-    // console.log(s);
-    var targetElement = event.target || event.srcElement;
+    let targetElement = event.target || event.srcElement;
+    let id = 1;
     if(targetElement.id==="circle"){
       let nickname = this.state.nickname;
-      let user=User.findOne({nickname});
-      let nBall = Ball.findOne({});
+
+      let user = User.findOne({nickname});
+      let nBall = Ball.findOne({_id:this.state.ball._id});
+
       if(nBall.size < nBall.maxSize){
         user.score += Math.floor(100*(nBall.size/nBall.maxSize));
         nBall.size += 1;
-        if(nBall.size%11===0){
+        if(nBall.size%(Math.floor(Math.random()*5)+11)===0 && this.state.nickname === nBall.p1){
           nBall.x = Math.floor(Math.random()*(1500-nBall.size))
           nBall.y = Math.floor(Math.random()*(1000-nBall.size))
           nBall.x = nBall.x >= nBall.size? nBall.x:nBall.size;
@@ -41,35 +46,38 @@ export  class App extends Component{
           nBall.xPrev =  nBall.x;
           nBall.yPrev =  nBall.y;
         }
-        User.update(user._id,user);
-        Ball.update(nBall._id,nBall);
+        Meteor.call("users.update",user);
+        Meteor.call("balls.update",nBall);
+
       }
       else{
         nBall.users = 0;
         user.score -= Math.floor(1000*(nBall.size/nBall.maxSize));
         let opponentNickName = nBall.p1===nickname? nBall.p2: nBall.p1;
-        let opponent=User.findOne({nickname: opponentNickName});
-
+        let opponent = User.findOne({nickname:opponentNickName});
         nBall.winner = opponent.score > user.score? opponent.nickname : user.nickname;
 
-        User.update(user._id,user);
-        Ball.update(nBall._id,nBall);
+        Meteor.call("users.update",user);
+        Meteor.call("balls.update",nBall);
       }
     }
     else{
-
-      let nBall = Ball.findOne({});
+      let nBall = Ball.findOne({_id:this.state.ball._id});
       let nickname = this.state.nickname;
-      let user=User.findOne({nickname});
+      let user = User.findOne({nickname});
       user.score -= Math.floor(300*(nBall.size/nBall.maxSize));
       nBall.xPrev =  nBall.x;
       nBall.yPrev =  nBall.y;
-      Ball.update(nBall._id,nBall);
-      User.update(user._id,user);
+      Meteor.call("users.update",user);
+      Meteor.call("balls.update",nBall);
+
+
     }
+
   }
 
-  enter = (nickname) => {
+  enter = (nickname, profile) => {
+
     if(!nickname){
       this.setState({errorMessage:"Please choose a nickname"});
       return;
@@ -79,58 +87,137 @@ export  class App extends Component{
       this.setState({errorMessage:"Nickname already taken, please choose another one."});
     }
     else{
+      this.setState({enterLoader:true});
       this.setState({errorMessage:""});
       this.setState({nickname});
-      User.insert({nickname,score:0});
-      let nBall = Ball.findOne({});
-      nBall.users+=1;
-      if(nBall.users===1){
+      Meteor.call("users.insert",{nickname,score:0,profile});
+      let balls = Ball.find({});
+      let nBall = {};
+      balls.forEach(function(ba) {
+        if(ba.users === 1 && !ba.private){
+          nBall = ba;
+          return;
+        }
+      });
+
+      if(!nBall.p1){
         nBall.p1 = nickname;
+        nBall.users = 1;
         nBall.winner = "";
-        this.setState({onHold:true});
+        Meteor.call("balls.insert",nBall,function(error, ballId){
+          this.setState({ ball:Ball.findOne({_id:ballId}), enterLoader:false }  );
+        }.bind(this));
       }
       else{
         nBall.p2 = nickname;
+        nBall.users = 2;
         nBall.maxSize = 150 + Math.floor(100*Math.random());
         nBall.size = 20;
+        nBall.x = 1000;
+        nBall.y = 300;
+
+        nBall.xPrev = nBall.x;
+        nBall.yPrev = nBall.y;
+        this.setState({ ball: nBall});
+        Meteor.call("balls.update",nBall);
       }
-      Ball.update(nBall._id,nBall);
     }
 
   }
   restart= ()=>{
-    this.setState({nickname:"",onHold:false});
+    this.setState({nickname:"", enterLoader:false, ball: {} });
   }
-  timeout= ()=>{
-    setTimeout(function(){
-      let nBall = Ball.findOne({});
-      nBall.users = 0;
-      Ball.update(nBall._id,nBall);
-    }, 300000);
-  }
+
   howToF= (b)=>{
-    console.log(Meteor.user());
     this.setState({howTo: b});
   }
-  render(){
-    if(this.props.ball){
-      if((this.props.ball.p1===this.state.nickname||this.props.ball.p2===this.state.nickname) && this.props.ball.winner){ //Fin del juego
-        return(
-          <GameOver winner = {this.props.ball.winner} restart = {this.restart}></GameOver>
-        )
-      }
-      if(this.props.ball.users===2 && (this.props.ball.p1===this.state.nickname||this.props.ball.p2===this.state.nickname)){ //Inicio de juego
-        return(
-          <Game play = {this.play} ball = {this.props.ball} opponent = {this.props.ball.p1===this.state.nickname?this.props.ball.p2:this.props.ball.p1}  users = {this.props.users} user ={this.state.nickname}></Game>
-        )
-      }
-      if(this.props.ball.users===2){ // Juego en curso
-        return <Enter  gameStarted = {true} timeout = {this.timeout}></Enter>
-      }
-      return <Enter enter ={this.enter} onHold = {(this.props.ball.p1===this.state.nickname&&this.props.ball.users===1)} errorMessage = {this.state.errorMessage} howTo = {this.state.howTo} howToF = {this.howToF}></Enter>
+
+  createPrivateMatch = (nickname, profile)=>{
+    if(!nickname){
+      this.setState({errorMessage:"Please choose a nickname"});
+      return;
+    }
+    let user=User.findOne({nickname});
+    if(user){
+      this.setState({errorMessage:"Nickname already taken, please choose another one."});
     }
     else{
-      return <div></div>
+      this.setState({enterLoader:true});
+      this.setState({errorMessage:""});
+      this.setState({nickname});
+
+      Meteor.call("users.insert",{nickname,score:0,profile});
+      let nBall = {};
+      nBall.p1 = nickname;
+      nBall.users = 1;
+      nBall.private = true;
+      nBall.winner = "";
+      Meteor.call("balls.insert",nBall,function(error, ballId){
+        this.setState({ ball:Ball.findOne({_id:ballId}), enterLoader:false, privateNumber:ballId }  );
+      }.bind(this));
+    }
+  }
+  joinView= (b)=>{
+    this.setState({wantToJoin: b});
+  }
+  joinPrivateMatch = (id,nickname,profile)=>{
+    if(!nickname){
+      this.setState({errorMessage:"Please choose a nickname"});
+      return;
+    }
+    let user=User.findOne({nickname});
+    if(user){
+      this.setState({errorMessage:"Nickname already taken, please choose another one."});
+    }
+    else{
+      this.setState({enterLoader:true});
+      this.setState({errorMessage:""});
+      this.setState({nickname});
+      let nBall = Ball.findOne({_id:id});
+      if(!nBall){
+        this.setState({errorMessage:"Invalid code"});
+        return;
+      }
+      if(nBall.users === 2){
+        this.setState({errorMessage:"Invalid code"});
+        return;
+      }
+      Meteor.call("users.insert",{nickname,score:0,profile});
+      nBall.p2 = nickname;
+      nBall.users = 2;
+      nBall.maxSize = 150 + Math.floor(100*Math.random());
+      nBall.size = 20;
+      nBall.x = 1000;
+      nBall.y = 300;
+      nBall.xPrev = nBall.x;
+      nBall.yPrev = nBall.y;
+      this.setState({ ball: nBall});
+      Meteor.call("balls.update",nBall);
+    }
+  }
+
+  render(){
+
+    if(this.state.ball.p1){
+      var bigBall = Ball.findOne({_id:this.state.ball._id});
+      if(bigBall.winner){ //Fin del juego
+        return(
+          <GameOver winner = {bigBall.winner} restart = {this.restart}></GameOver>
+        )
+      }
+      if(bigBall.users===2 ){ //Inicio de juego
+        return(
+          <Game play = {this.play} ball = {bigBall} opponent = {bigBall.p1===this.state.nickname?bigBall.p2:bigBall.p1}  users = {this.props.users} user ={this.state.nickname}></Game>
+        )
+      }
+      return <Enter wantToJoin ={this.state.wantToJoin} enter ={this.enter} onHold = {(bigBall.p1===this.state.nickname&&bigBall.users===1)}
+        privateNumber = {this.state.privateNumber} errorMessage = {this.state.errorMessage} howTo = {this.state.howTo} howToF = {this.howToF}
+         enterLoader = {this.state.enterLoader} createPrivateMatch={this.createPrivateMatch} joinPrivateMatch={this.joinPrivateMatch} joinView = {this.joinView}></Enter>
+    }
+    else{
+      return <Enter wantToJoin ={this.state.wantToJoin} enter ={this.enter}  errorMessage = {this.state.errorMessage} howTo = {this.state.howTo}
+        howToF = {this.howToF} enterLoader = {this.state.enterLoader} createPrivateMatch={this.createPrivateMatch}
+        joinPrivateMatch={this.joinPrivateMatch} joinView = {this.joinView}></Enter>
     }
 
   }
@@ -139,6 +226,6 @@ export  class App extends Component{
 export default withTracker(()=>{
   return {
     users: User.find({}).fetch(),
-    ball: Ball.find({}).fetch()[0]
+    balls: Ball.find({}).fetch()
   }
 })(App);
