@@ -3,9 +3,10 @@ import PropTypes from "prop-types";
 import { Template } from "meteor/templating";
 import { Blaze } from "meteor/blaze";
 import ReactDOM from "react-dom";
-import '../startup/accounts-config.js';
 import { createContainer } from 'meteor/react-meteor-data';
 import rUser from '../api/realUsers.js';
+import {Meteor} from 'meteor/meteor';
+import {withTracker} from "meteor/react-meteor-data"
 
 class EnterComponent extends Component{
   constructor(props){
@@ -119,9 +120,8 @@ class EnterComponent extends Component{
 
   }
 }
-export default  Enter = createContainer(() => {
-  Meteor.subscribe('usersData');
+export default Enter =  withTracker(()=>{
   return {
-    user: Meteor.user(),
-  };
-}, EnterComponent);
+    user: Meteor.user()
+  }
+})(EnterComponent);

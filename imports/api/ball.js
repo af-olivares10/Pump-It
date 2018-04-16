@@ -12,9 +12,6 @@ Meteor.methods({
   'balls.update'(nBall) {
     Ball.update(nBall._id,nBall);
   },
-  'balls.update'(nBall) {
-    Ball.update(nBall._id,nBall);
-  },
   'balls.insert'(nBall) {
     return Ball.insert(nBall);
   },

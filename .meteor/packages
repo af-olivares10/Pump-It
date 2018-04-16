@@ -23,5 +23,8 @@ brentjanderson:buzz
 accounts-ui
 accounts-google
 google-config-ui
-accounts-facebook
 facebook-config-ui
+xolvio:cleaner
+dburles:factory
+cultofcoders:mocha
+accounts-facebook
