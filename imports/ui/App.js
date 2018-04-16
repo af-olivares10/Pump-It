@@ -23,6 +23,9 @@ export  class App extends Component{
   }
 
   play = (event)=>{
+    
+    //Se puede eliminar código comentado
+    
     // var s = new buzz.sound('../imports/media/cluck.mp3');
     // s.play();
     let targetElement = event.target || event.srcElement;
@@ -165,6 +168,7 @@ export  class App extends Component{
       this.setState({errorMessage:"Please choose a nickname"});
       return;
     }
+    //El cliente podría ver todos los usuarios, mejor verificar
     let user=User.findOne({nickname});
     if(user){
       this.setState({errorMessage:"Nickname already taken, please choose another one."});
@@ -224,6 +228,8 @@ export  class App extends Component{
 }
 
 export default withTracker(()=>{
+  //Usar suscripciones para validar qué info puede ver el cliente
+  
   return {
     users: User.find({}).fetch(),
     balls: Ball.find({}).fetch()
