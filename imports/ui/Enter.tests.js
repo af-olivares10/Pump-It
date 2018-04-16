@@ -4,6 +4,7 @@ import {shallow} from "enzyme";
 import React from "react";
 import Enter from "./Enter";
 
+// Seria bueno probar que rendericen mas partes del html.
 if(!Meteor.isServer){
 describe("Buttons", () => {
     it("should render", () => {

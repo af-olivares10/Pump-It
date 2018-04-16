@@ -18,6 +18,8 @@ if (Meteor.isServer) {
         Ball.insert(nBall);
       });
 
+		// Se podria verificar que el metodo insert creara con un diccionario en
+		// en el metodo en vez de crearlo en el before each
       it("should insert a ball", () => {
         let ball = Ball.findOne({p1:"nickname"});
         assert.equal(nBall.p2, ball.p2);
