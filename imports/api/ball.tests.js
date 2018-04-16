@@ -1,4 +1,3 @@
-import { resetDatabase } from 'meteor/xolvio:cleaner';
 import { assert } from 'meteor/practicalmeteor:chai';
 
 import {Meteor} from "meteor/meteor";
@@ -16,7 +15,6 @@ if (Meteor.isServer) {
       nBall.private = true;
       nBall.winner = "";
       beforeEach(()=>{
-        resetDatabase();
         Ball.insert(nBall);
       });
 
@@ -35,7 +33,6 @@ if (Meteor.isServer) {
       nBall.private = true;
       nBall.winner = "";
       beforeEach(()=>{
-        resetDatabase();
         Ball.insert(nBall);
       });
 

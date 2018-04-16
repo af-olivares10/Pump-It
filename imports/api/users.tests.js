@@ -1,4 +1,3 @@
-import { resetDatabase } from 'meteor/xolvio:cleaner';
 import { assert } from 'meteor/practicalmeteor:chai';
 
 import {Meteor} from "meteor/meteor";
@@ -10,7 +9,6 @@ if (Meteor.isServer) {
     describe("users.insert", () => {
       let nickname = "ps";
       beforeEach(()=>{
-        resetDatabase();
         User.insert({nickname,score:1,profile:"profile"});
       })
       it("should insert a user", () => {
@@ -21,7 +19,6 @@ if (Meteor.isServer) {
     describe("users.update", () => {
       let nickname = "p1";
       beforeEach(()=>{
-        resetDatabase();
         User.insert({nickname,score:0,profile:"profile"});
       })
       it("should update a user", () => {
