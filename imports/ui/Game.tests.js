@@ -5,14 +5,19 @@ import React from "react";
 import Enter from "./Enter";
 
 if(!Meteor.isServer){
-describe("Buttons", () => {
+describe("SVG", () => {
     it("should render", () => {
+
       const enter = shallow(<Enter/>);
+
       assert.equal(enter.find("button").length,0);
     });
   });
-  describe("Anchortags", () => {
+
+
+  describe("Circle", () => {
       it("should render", () => {
+
         const enter = shallow(<Enter/>);
         assert.equal(enter.find("button").length,0);
       });
