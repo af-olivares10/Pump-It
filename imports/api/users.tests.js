@@ -10,7 +10,10 @@ if (Meteor.isServer) {
       let nickname = "ps";
       beforeEach(()=>{
         User.insert({nickname,score:1,profile:"profile"});
-      })
+	  })
+
+		// Seria bueno probar que se cree usando el metodo y no en el before
+		// each
       it("should insert a user", () => {
         let user = User.findOne({nickname});
           assert.equal(1, user.score);
